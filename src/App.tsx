@@ -5,6 +5,7 @@ import PrivateRoutesWrapper from './components/common/PrivateRoutesWrapper';
 import Account from './pages/Account';
 import Home from './pages/Home';
 import Login from './pages/Login';
+import Register from './pages/Register';
 import Transactions from './pages/Transactions';
 
 function App(): React.ReactElement {
@@ -12,6 +13,7 @@ function App(): React.ReactElement {
     <div>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
         <Route element={<PrivateRoutesWrapper />}>
           <Route path="/" element={<Home />} index />

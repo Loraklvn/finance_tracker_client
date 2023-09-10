@@ -17,6 +17,20 @@ type LoginResponse = {
   };
 };
 
-export const login = async (data: LoginParams): Promise<AxiosResponse> => {
+export const login = async (
+  data: LoginParams
+): Promise<AxiosResponse<LoginResponse>> => {
   return await postRequest<LoginResponse>(`${WEB_API_URL}/login`, data);
+};
+
+export type RegisterParams = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+export const registerUser = async (
+  data: RegisterParams
+): Promise<AxiosResponse<LoginResponse>> => {
+  return await postRequest<LoginResponse>(`${WEB_API_URL}/register`, data);
 };
