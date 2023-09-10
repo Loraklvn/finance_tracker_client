@@ -32,7 +32,7 @@ const variantStyles: VariantType = {
     yellow:
       'bg-yellow-400 text-black hover:text-gray-700 hover:bg-yellow-500 active:bg-yellow-800 active:text-yellow-100 focus-visible:outline-yellow-600  disabled:opacity-60 disabled:cursor-not-allowed',
     white:
-      'bg-white text-slate-900 hover:bg-blue-50 active:bg-blue-200 active:text-slate-600 focus-visible:outline-white',
+      'inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50',
     black:
       'border border-transparent bg-gray-900 text-base font-medium text-white shadow hover:bg-black focus:outline-none hover:opacity-80 focus:ring-2 focus:ring-white focus:ring-offset-2',
   },
@@ -53,7 +53,7 @@ const variantStyles: VariantType = {
 
 const btnSizes = {
   sm: 'px-3 py-1',
-  normal: 'px-3.5 py-1.5 sm:text-base',
+  normal: 'px-3.5 py-2 sm:py-1.5 sm:text-base',
   lg: 'px-5 py-3 sm:text-base',
 };
 
