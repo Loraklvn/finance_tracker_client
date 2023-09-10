@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 const navigation = [
   { name: 'Dashboard', href: '/' },
   { name: 'Transactions', href: '/transactions' },
-  { name: 'Account', href: '#' },
+  { name: 'Account', href: '/account' },
 ];
 
 type NavbarProps = {
