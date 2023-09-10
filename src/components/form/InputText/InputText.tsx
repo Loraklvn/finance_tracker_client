@@ -6,6 +6,7 @@ import { classNames } from '@/src/utils';
 interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   inputSize?: 'sm' | 'normal' | 'lg';
   register?: UseFormRegisterReturn;
+  passedRef: React.LegacyRef<HTMLInputElement> | undefined;
 }
 
 const sizes = {
@@ -18,9 +19,10 @@ const InputText = ({
   inputSize = 'normal',
   className = '',
   register = {} as UseFormRegisterReturn,
+  passedRef,
   ...props
 }: InputTextProps): React.ReactElement => {
-  const { ref, ...registerRest } = register;
+  const { ref: formRef, ...registerRest } = register;
 
   const classes = classNames(
     'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm',
@@ -31,7 +33,7 @@ const InputText = ({
   return (
     <input
       type="text"
-      ref={ref}
+      ref={passedRef || formRef}
       className={classes}
       {...props}
       {...registerRest}
