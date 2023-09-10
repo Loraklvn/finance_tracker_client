@@ -5,6 +5,9 @@ export const ERROR_MESSAGES = {
     'Something went wrong while loading categories. Please try again.',
   CREATING_CATEGORY:
     'Something went wrong while creating category. Please try again.',
+  PASSWORD_MISMATCH: 'Passwords do not match.',
+  INVALID_CREDENTIALS: 'Invalid credentials.',
+  REGISTRATION_FAILED: 'Registration failed. Try with different email.',
 };
 
 export const SUCCESS_MESSAGES = {

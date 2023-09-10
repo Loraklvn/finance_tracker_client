@@ -6,22 +6,24 @@ import { toast } from 'react-toastify';
 
 import Button from '@/components/form/Button';
 import InputText from '@/components/form/InputText';
-import { LoginParams, login } from '@/src/adapters/user';
+import { RegisterParams, registerUser } from '@/src/adapters/user';
 import { ERROR_MESSAGES } from '@/src/constants/meessages';
 import useAuth from '@/src/hooks/useAuth';
 
-const Login = (): ReactElement => {
-  const { register, handleSubmit } = useForm<LoginParams>();
+const Register = (): ReactElement => {
+  const { register, handleSubmit } = useForm<
+    RegisterParams & { password_confirmation: string }
+  >();
   const navigate = useNavigate();
   const { isAuth, setAuthInfo } = useAuth();
 
   const { mutate } = useMutation({
-    mutationFn: login,
+    mutationFn: registerUser,
     onSuccess: ({ data: { data } }) => {
       setAuthInfo(data.user_data, data.token);
     },
     onError: () => {
-      toast.error(ERROR_MESSAGES.INVALID_CREDENTIALS);
+      toast.error(ERROR_MESSAGES.REGISTRATION_FAILED);
     },
   });
 
@@ -31,7 +33,13 @@ const Login = (): ReactElement => {
     }
   }, [isAuth, navigate]);
 
-  const submitHandler = async (props: LoginParams): Promise<void> => {
+  const submitHandler = async (
+    props: RegisterParams & { password_confirmation: string }
+  ): Promise<void> => {
+    if (props.password !== props.password_confirmation) {
+      toast.error(ERROR_MESSAGES.PASSWORD_MISMATCH);
+      return;
+    }
     mutate(props);
   };
 
@@ -44,12 +52,28 @@ const Login = (): ReactElement => {
           alt="Your Company"
         />
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          Sign in to your account
+          Sign up for an account
         </h2>
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form className="space-y-6" onSubmit={handleSubmit(submitHandler)}>
+          <div>
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              Full Name
+            </label>
+            <div className="mt-2">
+              <InputText
+                register={register('name')}
+                autoComplete="name"
+                required
+              />
+            </div>
+          </div>
+
           <div>
             <label
               htmlFor="email"
@@ -87,6 +111,25 @@ const Login = (): ReactElement => {
           </div>
 
           <div>
+            <div className="flex items-center justify-between">
+              <label
+                htmlFor="password_confirmation"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Password Confirmation
+              </label>
+            </div>
+            <div className="mt-2">
+              <InputText
+                register={register('password_confirmation')}
+                type="password"
+                autoComplete="current-password"
+                required
+              />
+            </div>
+          </div>
+
+          <div>
             <Button type="submit" className="w-full">
               Sign in
             </Button>
@@ -94,16 +137,16 @@ const Login = (): ReactElement => {
         </form>
 
         <p className="mt-10 text-center text-sm text-gray-500">
-          Not a member?{' '}
+          Already a member?{' '}
           <Link
-            to="/register"
+            to="/login"
             className="font-semibold leading-6 text-primary hover:brightness-75"
           >
-            Create a free account
+            Sign In to your account
           </Link>
         </p>
       </div>
     </div>
   );
 };
-export default Login;
+export default Register;
