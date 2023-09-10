@@ -1,11 +1,11 @@
 import { ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const navigation = [
-  { name: 'Dashboard', href: '/home', current: true },
-  { name: 'Transactions', href: '#', current: false },
-  { name: 'Account', href: '#', current: false },
+  { name: 'Dashboard', href: '/' },
+  { name: 'Transactions', href: '/transactions' },
+  { name: 'Account', href: '#' },
 ];
 
 type NavbarProps = {
@@ -13,6 +13,7 @@ type NavbarProps = {
 };
 
 const Navbar = ({ logout }: NavbarProps): React.ReactElement => {
+  const { pathname } = useLocation();
   return (
     <nav className="bg-white shadow">
       <div className="mx-auto w-full sm:max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -27,7 +28,7 @@ const Navbar = ({ logout }: NavbarProps): React.ReactElement => {
                   key={item.name}
                   to={item.href}
                   className={`inline-flex items-center ${
-                    item.current ? 'border-b-2 border-primary' : ''
+                    item.href === pathname ? 'border-b-2 border-primary' : ''
                   } px-1 pt-1 text-sm font-medium text-gray-900`}
                 >
                   {item.name}
