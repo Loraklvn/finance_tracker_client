@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 
-import { WEB_API_URL, getRequest } from '../helpers';
+import { WEB_API_URL, getRequest, postRequest } from '../helpers';
 
 import {
   TransactionsResponse,
@@ -20,6 +20,20 @@ export const getTransactions = async (
   return await getRequest<TransactionsResponse>(`${WEB_API_URL}/transaction`, {
     params,
   });
+};
+
+export type CreateTransactionParams = {
+  amount: number;
+  note?: string;
+  type: string;
+  category_id: number;
+  date: string;
+};
+
+export const createTransaction = async (
+  data: CreateTransactionParams
+): Promise<AxiosResponse> => {
+  return await postRequest(`${WEB_API_URL}/transaction`, data);
 };
 
 export type TransactionsSummaryByCategoryParams = {

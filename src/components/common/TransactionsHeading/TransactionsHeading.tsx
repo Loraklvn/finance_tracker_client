@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CalendarIcon, CurrencyDollarIcon } from '@heroicons/react/20/solid';
 import { PlusIcon } from '@heroicons/react/24/outline';
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
+
+import CreateTransactionModal from '../CreateTransactionModal/CreateTransactionModal';
 
 import CustomDateInput from '@/components/common/CustomDateInput';
 import Button from '@/components/form/Button';
@@ -13,6 +15,7 @@ type TransactionsHeadingProps = {
   balance: number;
   dateRange: [Date | null, Date | null];
   setDateRange: (dateRange: [Date | null, Date | null]) => void;
+  onCreateTransSuccess: () => void;
 };
 
 const TransactionsHeading = ({
@@ -20,11 +23,20 @@ const TransactionsHeading = ({
   balance,
   dateRange,
   setDateRange,
+  onCreateTransSuccess,
 }: TransactionsHeadingProps): ReactElement => {
   const [startDate, endDate] = dateRange;
+  const [showCreateTransactionModal, setShowCreateTransactionModal] =
+    useState<boolean>(false);
 
   return (
     <div className="lg:flex lg:items-center lg:justify-between">
+      <CreateTransactionModal
+        show={showCreateTransactionModal}
+        onClose={setShowCreateTransactionModal}
+        onRefetch={onCreateTransSuccess}
+      />
+
       <div className="min-w-0 flex-1">
         <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
           {title}
@@ -75,7 +87,10 @@ const TransactionsHeading = ({
         </span>
 
         <span className="sm:ml-3">
-          <Button type="button">
+          <Button
+            onClick={(): void => setShowCreateTransactionModal(true)}
+            type="button"
+          >
             <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
             Add Transaction
           </Button>

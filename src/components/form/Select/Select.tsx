@@ -1,9 +1,11 @@
 import React, { InputHTMLAttributes } from 'react';
+import { UseFormRegisterReturn } from 'react-hook-form';
 
 import { classNames } from '@/src/utils';
 
 interface SelectProps extends InputHTMLAttributes<HTMLSelectElement> {
   inputSize?: 'sm' | 'normal' | 'lg';
+  register?: UseFormRegisterReturn;
 }
 
 const sizes = {
@@ -15,9 +17,12 @@ const sizes = {
 const Select = ({
   inputSize = 'normal',
   className = '',
+  register = {} as UseFormRegisterReturn,
   children,
   ...props
 }: SelectProps): React.ReactElement => {
+  const { ref: formRef, ...registerRest } = register;
+
   const classes = classNames(
     'mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-primary focus:outline-none focus:ring-primary sm:text-sm',
     sizes[inputSize],
@@ -25,7 +30,7 @@ const Select = ({
   );
 
   return (
-    <select className={classes} {...props}>
+    <select className={classes} ref={formRef} {...registerRest} {...props}>
       {children}
     </select>
   );
