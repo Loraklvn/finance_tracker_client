@@ -19,11 +19,10 @@ const Home = (): React.ReactElement => {
     getFirstDayOfMonthDate(),
     new Date(),
   ]);
-  const { data, isLoading, isError } = useQuery({
+
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['transactions'],
     enabled: !!dateRange[0] && !!dateRange[1],
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
     queryFn: () =>
       getTransactionsSummaryByCategories({
         startDate: getFilterDate(dateRange[0] as Date),
@@ -61,6 +60,7 @@ const Home = (): React.ReactElement => {
           setDateRange={setDateRange}
           dateRange={dateRange}
           balance={summary?.balance || 0}
+          onCreateTransSuccess={refetch}
         />
 
         {isEmpty ? (

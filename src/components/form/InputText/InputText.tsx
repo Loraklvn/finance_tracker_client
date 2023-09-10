@@ -6,7 +6,7 @@ import { classNames } from '@/src/utils';
 interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   inputSize?: 'sm' | 'normal' | 'lg';
   register?: UseFormRegisterReturn;
-  passedRef: React.LegacyRef<HTMLInputElement> | undefined;
+  passedRef?: React.LegacyRef<HTMLInputElement> | undefined;
 }
 
 const sizes = {

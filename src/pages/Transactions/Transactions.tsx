@@ -16,11 +16,10 @@ const Transactions = (): ReactElement => {
     getFirstDayOfMonthDate(),
     new Date(),
   ]);
-  const { data, isLoading, isError } = useQuery({
+
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['transactions-history'],
     enabled: !!dateRange[0] && !!dateRange[1],
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
     queryFn: () =>
       getTransactions({
         startDate: getFilterDate(dateRange[0] as Date),
@@ -58,6 +57,7 @@ const Transactions = (): ReactElement => {
           setDateRange={setDateRange}
           dateRange={dateRange}
           balance={transactionsData?.balance || 0}
+          onCreateTransSuccess={refetch}
         />
 
         <TransactionsStats
