@@ -1,6 +1,11 @@
 import { AxiosResponse } from 'axios';
 
-import { WEB_API_URL, getRequest, postRequest } from '../helpers';
+import {
+  WEB_API_URL,
+  deleteRequest,
+  getRequest,
+  postRequest,
+} from '../helpers';
 
 import {
   TransactionsResponse,
@@ -48,4 +53,8 @@ export const getTransactionsSummaryByCategories = async (
     `${WEB_API_URL}/transaction/summary/category`,
     { params }
   );
+};
+
+export const deleteTransaction = async (id: number): Promise<AxiosResponse> => {
+  return await deleteRequest(`${WEB_API_URL}/transaction/${id}`, {});
 };
