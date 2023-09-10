@@ -8,24 +8,26 @@ import CustomDateInput from '@/components/common/CustomDateInput';
 import Button from '@/components/form/Button';
 import { formatToMoney } from '@/src/utils';
 
-type HomeHeadingProps = {
+type TransactionsHeadingProps = {
+  title: string;
   balance: number;
   dateRange: [Date | null, Date | null];
   setDateRange: (dateRange: [Date | null, Date | null]) => void;
 };
 
-const HomeHeading = ({
+const TransactionsHeading = ({
+  title,
   balance,
   dateRange,
   setDateRange,
-}: HomeHeadingProps): ReactElement => {
+}: TransactionsHeadingProps): ReactElement => {
   const [startDate, endDate] = dateRange;
 
   return (
     <div className="lg:flex lg:items-center lg:justify-between">
       <div className="min-w-0 flex-1">
         <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
-          Finance Summary
+          {title}
         </h2>
         <div className="mt-1 flex flex-col sm:mt-0 sm:flex-row sm:flex-wrap sm:space-x-6">
           <div className="mt-2 flex items-center text-lg text-gray-500">
@@ -82,4 +84,4 @@ const HomeHeading = ({
     </div>
   );
 };
-export default HomeHeading;
+export default TransactionsHeading;

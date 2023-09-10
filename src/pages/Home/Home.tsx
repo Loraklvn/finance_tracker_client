@@ -5,7 +5,7 @@ import Container from '@/components/common/Container';
 import EmptyTransactionsFeedback from '@/components/common/EmptyTransactionsFeedback';
 import ErrorFeedback from '@/components/common/ErrorFeedback';
 import LoadingContainer from '@/components/common/LoadingContainer';
-import HomeHeading from '@/components/Home/HomeHeading';
+import TransactionsHeading from '@/components/common/TransactionsHeading';
 import SummaryByCategoryList from '@/components/Home/SummaryByCategoryList';
 import { getTransactionsSummaryByCategories } from '@/src/adapters/transactions';
 import {
@@ -56,7 +56,8 @@ const Home = (): React.ReactElement => {
   return (
     <article className="mt-4">
       <Container>
-        <HomeHeading
+        <TransactionsHeading
+          title="Finance Summary"
           setDateRange={setDateRange}
           dateRange={dateRange}
           balance={summary?.balance || 0}
