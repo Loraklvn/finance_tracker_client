@@ -15,3 +15,10 @@ export type CategoriesResponse = {
     categories: Category[];
   };
 };
+
+export type CreateCategoryResponse = {
+  status: string;
+  data: {
+    category: Category;
+  };
+};
