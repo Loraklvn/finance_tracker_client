@@ -4,6 +4,7 @@ import { PlusIcon } from '@heroicons/react/24/outline';
 import { ReactElement, useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
 
+import CreateCategoryModal from '../CreateCategoryModal';
 import CreateTransactionModal from '../CreateTransactionModal/CreateTransactionModal';
 
 import CustomDateInput from '@/components/common/CustomDateInput';
@@ -28,6 +29,8 @@ const TransactionsHeading = ({
   const [startDate, endDate] = dateRange;
   const [showCreateTransactionModal, setShowCreateTransactionModal] =
     useState<boolean>(false);
+  const [showCreateCategoryModal, setShowCreateCategoryModal] =
+    useState<boolean>(false);
 
   return (
     <div className="lg:flex lg:items-center lg:justify-between">
@@ -35,6 +38,11 @@ const TransactionsHeading = ({
         show={showCreateTransactionModal}
         onClose={setShowCreateTransactionModal}
         onRefetch={onCreateTransSuccess}
+      />
+
+      <CreateCategoryModal
+        show={showCreateCategoryModal}
+        onClose={setShowCreateCategoryModal}
       />
 
       <div className="min-w-0 flex-1">
@@ -79,6 +87,7 @@ const TransactionsHeading = ({
           <button
             color="white"
             type="button"
+            onClick={(): void => setShowCreateCategoryModal(true)}
             className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
           >
             <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />

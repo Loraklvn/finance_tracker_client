@@ -24,7 +24,7 @@ const TransactionsList = ({
               <thead className="sr-only">
                 <tr>
                   <th>Amount</th>
-                  <th className="hidden sm:table-cell">Client</th>
+                  <th className="hidden sm:table-cell">Description</th>
                   <th>More details</th>
                 </tr>
               </thead>

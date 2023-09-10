@@ -36,7 +36,8 @@ const CreateTransactionModal = ({
   );
 
   const { data: categoriesRes, isLoading: isCategoryLoading } = useQuery({
-    queryKey: ['categories'],
+    queryKey: ['categories', show],
+    enabled: show,
     queryFn: getCategories,
     onError: () => {
       toast.error(ERROR_MESSAGES.LOADING_CATEGORIES);
@@ -65,21 +66,12 @@ const CreateTransactionModal = ({
   const submitHandler = async (
     data: CreateTransactionParams
   ): Promise<void> => {
-    // eslint-disable-next-line no-console
-    console.log({ data });
-
     mutate({ ...data, date: selectedDate?.toISOString() });
   };
 
   return (
     <Transition.Root show={show} as={Fragment}>
-      <Dialog
-        as="div"
-        className="relative z-10"
-        onClose={(): void => {
-          //
-        }}
-      >
+      <Dialog as="div" className="relative z-10" onClose={onClose}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -130,7 +122,6 @@ const CreateTransactionModal = ({
                             valueAsNumber: true,
                           })}
                           id="amount"
-                          autoComplete="address-level1"
                         />
                       </div>
                     </div>
