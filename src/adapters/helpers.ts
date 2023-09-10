@@ -37,3 +37,10 @@ export function getRequest<T>(
 ): Promise<AxiosResponse<T>> {
   return axios.get(url, { ...defaultConfig, ...customConfig });
 }
+
+export function deleteRequest<T>(
+  url: string,
+  data: Record<string, unknown>
+): Promise<AxiosResponse<T>> {
+  return axios.delete(url, data);
+}

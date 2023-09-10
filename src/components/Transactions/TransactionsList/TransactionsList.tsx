@@ -1,5 +1,6 @@
-import { EllipsisHorizontalCircleIcon } from '@heroicons/react/24/outline';
 import { Fragment, ReactElement } from 'react';
+
+import TransactionActions from '../TransactionActions';
 
 import { Transaction } from '@/src/types/transactions';
 import { formatToMoney, getDisplyDate } from '@/src/utils';
@@ -8,12 +9,14 @@ type TransactionsListProps = {
   dateFrom: Date | null;
   dateTo: Date | null;
   transactions: Transaction[];
+  onDeleteTransaction: (transaction: Transaction) => void;
 };
 
 const TransactionsList = ({
   transactions,
   dateFrom,
   dateTo,
+  onDeleteTransaction,
 }: TransactionsListProps): ReactElement => {
   return (
     <>
@@ -51,10 +54,6 @@ const TransactionsList = ({
                     <tr key={transaction.transaction_id}>
                       <td className="relative py-5 pr-3 sm:pr-6">
                         <div className="flex gap-x-2 sm:gap-x-6">
-                          <EllipsisHorizontalCircleIcon
-                            className="hiddens place-self-center h-5 w-5 cursor-pointer flex-none text-gray-700 sm:block"
-                            aria-hidden="true"
-                          />
                           <div className="flex-auto">
                             <div className="flex items-start gap-x-3">
                               <div className="text- font-medium leading-6 text-gray-900">
@@ -93,6 +92,14 @@ const TransactionsList = ({
                             {getDisplyDate(new Date(transaction.date))}
                           </span>
                         </div>
+                      </td>
+                      <td>
+                        <TransactionActions
+                          onDelete={(): void =>
+                            onDeleteTransaction(transaction)
+                          }
+                          onEdit={(): void => {}}
+                        />
                       </td>
                     </tr>
                   ))}

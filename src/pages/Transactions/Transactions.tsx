@@ -1,6 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { ReactElement, useState } from 'react';
+import { toast } from 'react-toastify';
 
+import ConfirmationModal from '@/components/common/ConfirmationModal';
 import Container from '@/components/common/Container';
 import EmptyTransactionsFeedback from '@/components/common/EmptyTransactionsFeedback';
 import ErrorFeedback from '@/components/common/ErrorFeedback';
@@ -8,7 +10,12 @@ import LoadingContainer from '@/components/common/LoadingContainer';
 import TransactionsHeading from '@/components/common/TransactionsHeading';
 import TransactionsList from '@/components/Transactions/TransactionsList';
 import TransactionsStats from '@/components/Transactions/TransactionsStats';
-import { getTransactions } from '@/src/adapters/transactions';
+import {
+  deleteTransaction,
+  getTransactions,
+} from '@/src/adapters/transactions';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/src/constants/meessages';
+import { Transaction } from '@/src/types/transactions';
 import { getFilterDate, getFirstDayOfMonthDate } from '@/src/utils';
 
 const Transactions = (): ReactElement => {
@@ -16,6 +23,9 @@ const Transactions = (): ReactElement => {
     getFirstDayOfMonthDate(),
     new Date(),
   ]);
+  const [selectedTransaction, setSelectedTransaction] =
+    useState<Transaction | null>(null);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['transactions-history'],
@@ -26,6 +36,17 @@ const Transactions = (): ReactElement => {
         endDate: getFilterDate(dateRange[1] as Date),
       }),
   });
+  const { mutate } = useMutation({
+    mutationFn: deleteTransaction,
+    onSuccess: () => {
+      setShowConfirmationModal(false);
+      refetch();
+      toast.success(SUCCESS_MESSAGES.DELETE_TRANSACTION);
+    },
+    onError: () => {
+      toast.error(ERROR_MESSAGES.DELETE_TRANSACTION);
+    },
+  });
 
   const transactionsData = data?.data?.data;
 
@@ -35,6 +56,14 @@ const Transactions = (): ReactElement => {
     !transactionsData?.total_expenses &&
     !transactionsData?.total_income;
   const showLoading = isLoading && !data;
+
+  const handleDeleteTransaction = (): void => {
+    // eslint-disable-next-line no-console
+    console.log({ selectedTransaction });
+    if (selectedTransaction) {
+      mutate(selectedTransaction.transaction_id);
+    }
+  };
 
   if (showLoading) {
     return <LoadingContainer isLoading className="h-[500px]" />;
@@ -51,6 +80,14 @@ const Transactions = (): ReactElement => {
 
   return (
     <article className="mt-4">
+      <ConfirmationModal
+        open={showConfirmationModal}
+        title="Delete transaction"
+        description="Are you sure you want to delete this transaction?"
+        onConfirm={handleDeleteTransaction}
+        onCancel={(): void => setShowConfirmationModal(false)}
+      />
+
       <Container>
         <TransactionsHeading
           title="Transactions History"
@@ -74,6 +111,10 @@ const Transactions = (): ReactElement => {
               transactions={transactionsData?.transactions || []}
               dateFrom={dateRange[0]}
               dateTo={dateRange[1]}
+              onDeleteTransaction={(transaction: Transaction): void => {
+                setSelectedTransaction(transaction);
+                setShowConfirmationModal(true);
+              }}
             />
           </div>
         )}
