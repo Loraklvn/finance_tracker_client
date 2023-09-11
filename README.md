@@ -12,6 +12,8 @@ Welcome to the Personal Finance Tracker App! This frontend application complemen
 
 You can access the deployed frontend of the Finance Tracker app by following this link:
 
+**(currently not fully working on IOS mobile, due to some deployment issues)**
+
 [Finance Tracker Frontend](https://finance-tracker-client-sandy.vercel.app/)
 ## Features
 
