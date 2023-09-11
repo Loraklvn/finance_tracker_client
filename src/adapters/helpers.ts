@@ -1,5 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
+axios.defaults.withCredentials = true;
+
 export const WEB_API_URL = import.meta.env.VITE_API_URL as string;
 
 type RequestHeaders = {

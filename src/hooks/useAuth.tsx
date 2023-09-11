@@ -20,7 +20,7 @@ const useAuth = (): AuthResponse => {
 
   const logout = (): void => {
     Cookies.remove(AUTH_COOKIE_NAME);
-    dispatch(setUserAuth({ user: null }));
+    location.reload();
   };
 
   const setAuthInfo = (passedUser: User, token: string): void => {

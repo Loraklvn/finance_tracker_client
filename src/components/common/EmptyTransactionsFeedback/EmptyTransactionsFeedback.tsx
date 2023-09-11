@@ -3,7 +3,13 @@ import { ReactElement } from 'react';
 
 import Button from '@/components/form/Button';
 
-const EmptyTransactionsFeedback = (): ReactElement => {
+type EmptyTransactionsFeedbackProps = {
+  onAddTransactionClick: () => void;
+};
+
+const EmptyTransactionsFeedback = ({
+  onAddTransactionClick,
+}: EmptyTransactionsFeedbackProps): ReactElement => {
   return (
     <div className="text-center mt-44">
       <BanknotesIcon className="mx-auto h-12 w-12 text-green-500" />
@@ -11,7 +17,7 @@ const EmptyTransactionsFeedback = (): ReactElement => {
         No transactions were made on this date range.
       </h3>
       <div className="mt-6">
-        <Button type="button">
+        <Button onClick={onAddTransactionClick} type="button">
           <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
           Add a new transaction
         </Button>

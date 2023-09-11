@@ -108,7 +108,11 @@ const Transactions = (): ReactElement => {
         />
 
         {isEmpty ? (
-          <EmptyTransactionsFeedback />
+          <EmptyTransactionsFeedback
+            onAddTransactionClick={(): void => {
+              dispatch(setShowCreateTransactionModal(true));
+            }}
+          />
         ) : (
           <div className="mt-8">
             <TransactionsList
