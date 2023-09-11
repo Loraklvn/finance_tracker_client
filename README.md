@@ -39,13 +39,17 @@ Before you begin, ensure you have the following requirements:
 2. Change into the project directory:
 
    ```bash
-   cd personal-finance-tracker
+   cd finance_tracker_client
    ```
 
 3. Install project dependencies:
 
    ```bash
-   yarn install
+   yarn install 
+   ```
+      or
+    ```bash
+     npm install
    ```
 
 4. Create an `.env` file in the project root directory and add the following environment variable:
@@ -63,7 +67,11 @@ To run the frontend application, you have several scripts available in the `pack
 - **Start the development server:**
 
   ```bash
-  yarn dev (or npm run dev)
+  yarn dev
+  ```
+  or
+   ```bash
+  npm run dev
   ```
 
 - **Build the production-ready project:**
