@@ -33,7 +33,7 @@ Before you begin, ensure you have the following requirements:
 1. Clone the repository to your local machine:
 
    ```bash
-   git clone https://github.com/your-username/personal-finance-tracker.git
+   git clone https://github.com/Loraklvn/finance_tracker_client.git
    ```
 
 2. Change into the project directory:
@@ -95,6 +95,14 @@ The app consists of several pages and components:
 - **/**: Home page displaying summary transactions by categories.
 - **/transactions**: Transaction history page with the ability to create and edit transactions.
 - **/account**: User account page displaying basic user information.
+
+## Note
+
+This project currently lacks unit testing due to time constraints. While I would have preferred to include comprehensive unit tests, the project had to be submitted without them.
+
+Additionally, there are several areas where improvements could be made if more time were available.
+
+I appreciate your understanding.
 
 ## License
 
