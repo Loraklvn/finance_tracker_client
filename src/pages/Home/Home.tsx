@@ -8,6 +8,8 @@ import LoadingContainer from '@/components/common/LoadingContainer';
 import TransactionsHeading from '@/components/common/TransactionsHeading';
 import SummaryByCategoryList from '@/components/Home/SummaryByCategoryList';
 import { getTransactionsSummaryByCategories } from '@/src/adapters/transactions';
+import { useAppDispatch } from '@/src/redux/hooks';
+import { setShowCreateTransactionModal } from '@/src/redux/slices/transactionSlice';
 import {
   formatToMoney,
   getFilterDate,
@@ -15,6 +17,7 @@ import {
 } from '@/src/utils';
 
 const Home = (): React.ReactElement => {
+  const dispatch = useAppDispatch();
   const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
     getFirstDayOfMonthDate(),
     new Date(),
@@ -64,7 +67,11 @@ const Home = (): React.ReactElement => {
         />
 
         {isEmpty ? (
-          <EmptyTransactionsFeedback />
+          <EmptyTransactionsFeedback
+            onAddTransactionClick={(): void => {
+              dispatch(setShowCreateTransactionModal(true));
+            }}
+          />
         ) : (
           <>
             <div className="mt-8">

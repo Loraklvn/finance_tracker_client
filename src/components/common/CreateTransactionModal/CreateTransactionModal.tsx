@@ -19,6 +19,7 @@ import {
 } from '@/src/adapters/transactions';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/src/constants/meessages';
 import { Transaction } from '@/src/types/transactions';
+import { getFilterDate } from '@/src/utils';
 
 type CreateTransactionModalProps = {
   show: boolean;
@@ -98,11 +99,14 @@ const CreateTransactionModal = ({
     data: CreateTransactionParams
   ): Promise<void> => {
     if (!isEditing && !transactionToEdit) {
-      mutateCreateTransaction({ ...data, date: selectedDate?.toISOString() });
+      mutateCreateTransaction({ ...data, date: getFilterDate(selectedDate) });
     } else {
       mutateUpdateTransaction({
         id: transactionToEdit?.transaction_id as number,
-        data,
+        data: {
+          ...data,
+          date: getFilterDate(selectedDate),
+        },
       });
     }
   };
