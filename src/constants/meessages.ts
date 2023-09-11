@@ -9,10 +9,12 @@ export const ERROR_MESSAGES = {
   INVALID_CREDENTIALS: 'Invalid credentials.',
   REGISTRATION_FAILED: 'Registration failed. Try with different email.',
   DELETE_TRANSACTION: 'Something went wrong while deleting transaction.',
+  UPDATING_TRANSACTION: 'Something went wrong while updating transaction.',
 };
 
 export const SUCCESS_MESSAGES = {
   CREATING_TRANSACTION: 'Transaction created successfully.',
   CREATING_CATEGORY: 'Category created successfully.',
   DELETE_TRANSACTION: 'Transaction deleted successfully.',
+  UPDATING_TRANSACTION: 'Transaction updated successfully.',
 };

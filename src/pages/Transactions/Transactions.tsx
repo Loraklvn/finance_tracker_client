@@ -15,10 +15,16 @@ import {
   getTransactions,
 } from '@/src/adapters/transactions';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/src/constants/meessages';
+import { useAppDispatch } from '@/src/redux/hooks';
+import {
+  setIsEditingTransaction,
+  setShowCreateTransactionModal,
+} from '@/src/redux/slices/transactionSlice';
 import { Transaction } from '@/src/types/transactions';
 import { getFilterDate, getFirstDayOfMonthDate } from '@/src/utils';
 
 const Transactions = (): ReactElement => {
+  const dispatch = useAppDispatch();
   const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
     getFirstDayOfMonthDate(),
     new Date(),
@@ -58,8 +64,6 @@ const Transactions = (): ReactElement => {
   const showLoading = isLoading && !data;
 
   const handleDeleteTransaction = (): void => {
-    // eslint-disable-next-line no-console
-    console.log({ selectedTransaction });
     if (selectedTransaction) {
       mutate(selectedTransaction.transaction_id);
     }
@@ -114,6 +118,12 @@ const Transactions = (): ReactElement => {
               onDeleteTransaction={(transaction: Transaction): void => {
                 setSelectedTransaction(transaction);
                 setShowConfirmationModal(true);
+              }}
+              onEditTransaction={(transaction: Transaction): void => {
+                dispatch(setShowCreateTransactionModal(true));
+                dispatch(
+                  setIsEditingTransaction({ isEditng: true, transaction })
+                );
               }}
             />
           </div>
