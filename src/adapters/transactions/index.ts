@@ -5,6 +5,7 @@ import {
   deleteRequest,
   getRequest,
   postRequest,
+  putRequest,
 } from '../helpers';
 
 import {
@@ -39,6 +40,18 @@ export const createTransaction = async (
   data: CreateTransactionParams
 ): Promise<AxiosResponse> => {
   return await postRequest(`${WEB_API_URL}/transaction`, data);
+};
+
+export type UpdateTransactionParams = {
+  id: number;
+  data: Partial<CreateTransactionParams>;
+};
+
+export const updateTransaction = async ({
+  id,
+  data,
+}: UpdateTransactionParams): Promise<AxiosResponse> => {
+  return await putRequest(`${WEB_API_URL}/transaction/${id}`, data);
 };
 
 export type TransactionsSummaryByCategoryParams = {

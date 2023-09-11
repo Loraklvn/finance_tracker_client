@@ -9,6 +9,11 @@ import CreateTransactionModal from '../CreateTransactionModal/CreateTransactionM
 
 import CustomDateInput from '@/components/common/CustomDateInput';
 import Button from '@/components/form/Button';
+import { useAppDispatch, useAppSelector } from '@/src/redux/hooks';
+import {
+  setIsEditingTransaction,
+  setShowCreateTransactionModal,
+} from '@/src/redux/slices/transactionSlice';
 import { formatToMoney } from '@/src/utils';
 
 type TransactionsHeadingProps = {
@@ -26,9 +31,13 @@ const TransactionsHeading = ({
   setDateRange,
   onCreateTransSuccess,
 }: TransactionsHeadingProps): ReactElement => {
+  const {
+    isEditingTransaction,
+    selectedTransaction,
+    showCreateTransactionModal,
+  } = useAppSelector((state) => state.transaction);
+  const dispatch = useAppDispatch();
   const [startDate, endDate] = dateRange;
-  const [showCreateTransactionModal, setShowCreateTransactionModal] =
-    useState<boolean>(false);
   const [showCreateCategoryModal, setShowCreateCategoryModal] =
     useState<boolean>(false);
 
@@ -36,8 +45,20 @@ const TransactionsHeading = ({
     <div className="lg:flex lg:items-center lg:justify-between">
       <CreateTransactionModal
         show={showCreateTransactionModal}
-        onClose={setShowCreateTransactionModal}
+        onClose={(): void => {
+          dispatch(setShowCreateTransactionModal(false));
+          if (isEditingTransaction) {
+            dispatch(
+              setIsEditingTransaction({
+                isEditng: false,
+                transaction: null,
+              })
+            );
+          }
+        }}
         onRefetch={onCreateTransSuccess}
+        isEditing={isEditingTransaction}
+        transactionToEdit={selectedTransaction}
       />
 
       <CreateCategoryModal
@@ -97,7 +118,9 @@ const TransactionsHeading = ({
 
         <span className="sm:ml-3">
           <Button
-            onClick={(): void => setShowCreateTransactionModal(true)}
+            onClick={(): void => {
+              dispatch(setShowCreateTransactionModal(true));
+            }}
             type="button"
           >
             <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />

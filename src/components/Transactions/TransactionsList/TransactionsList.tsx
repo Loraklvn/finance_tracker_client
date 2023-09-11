@@ -10,6 +10,7 @@ type TransactionsListProps = {
   dateTo: Date | null;
   transactions: Transaction[];
   onDeleteTransaction: (transaction: Transaction) => void;
+  onEditTransaction: (transaction: Transaction) => void;
 };
 
 const TransactionsList = ({
@@ -17,6 +18,7 @@ const TransactionsList = ({
   dateFrom,
   dateTo,
   onDeleteTransaction,
+  onEditTransaction,
 }: TransactionsListProps): ReactElement => {
   return (
     <>
@@ -98,7 +100,9 @@ const TransactionsList = ({
                           onDelete={(): void =>
                             onDeleteTransaction(transaction)
                           }
-                          onEdit={(): void => {}}
+                          onEdit={(): void => {
+                            onEditTransaction(transaction);
+                          }}
                         />
                       </td>
                     </tr>

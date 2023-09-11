@@ -1,6 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Fragment, ReactElement, useState } from 'react';
+import { Fragment, ReactElement, useEffect, useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -15,21 +15,28 @@ import { getCategories } from '@/src/adapters/category';
 import {
   CreateTransactionParams,
   createTransaction,
+  updateTransaction,
 } from '@/src/adapters/transactions';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/src/constants/meessages';
+import { Transaction } from '@/src/types/transactions';
 
 type CreateTransactionModalProps = {
   show: boolean;
+  isEditing: boolean;
+  transactionToEdit: Transaction | null;
   onClose: (status: boolean) => void;
   onRefetch: () => void;
 };
 
 const CreateTransactionModal = ({
   show,
+  isEditing,
+  transactionToEdit,
   onClose,
   onRefetch,
 }: CreateTransactionModalProps): ReactElement => {
-  const { register, reset, handleSubmit } = useForm<CreateTransactionParams>();
+  const { register, reset, setValue, handleSubmit } =
+    useForm<CreateTransactionParams>();
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedType, setSelectedType] = useState<'expense' | 'income'>(
     'expense'
@@ -48,30 +55,74 @@ const CreateTransactionModal = ({
       (category) => category.type === selectedType
     ) || [];
 
-  const { mutate, isLoading } = useMutation({
+  const { mutate: mutateCreateTransaction, isLoading } = useMutation({
     mutationFn: createTransaction,
     onSuccess: () => {
-      reset();
-      onClose(false);
-      onRefetch();
-      toast.success(SUCCESS_MESSAGES.CREATING_TRANSACTION);
+      handleOnSuccess(SUCCESS_MESSAGES.CREATING_TRANSACTION);
     },
     onError: () => {
       toast.error(ERROR_MESSAGES.CREATING_TRANSACTION);
     },
   });
 
+  const { mutate: mutateUpdateTransaction } = useMutation({
+    mutationFn: updateTransaction,
+    onSuccess: () => {
+      handleOnSuccess(SUCCESS_MESSAGES.UPDATING_TRANSACTION);
+    },
+    onError: () => {
+      toast.error(ERROR_MESSAGES.UPDATING_TRANSACTION);
+    },
+  });
+
   const loading = isLoading || isCategoryLoading;
+
+  const clearFieldsValue = (): void => {
+    reset();
+    setSelectedDate(new Date());
+    setSelectedType('expense');
+  };
+
+  const handleOnClose = (): void => {
+    clearFieldsValue();
+    onClose(false);
+  };
+
+  const handleOnSuccess = (successMessage: string): void => {
+    onRefetch();
+    handleOnClose();
+    toast.success(successMessage);
+  };
 
   const submitHandler = async (
     data: CreateTransactionParams
   ): Promise<void> => {
-    mutate({ ...data, date: selectedDate?.toISOString() });
+    if (!isEditing && !transactionToEdit) {
+      mutateCreateTransaction({ ...data, date: selectedDate?.toISOString() });
+    } else {
+      mutateUpdateTransaction({
+        id: transactionToEdit?.transaction_id as number,
+        data,
+      });
+    }
   };
+
+  useEffect(() => {
+    if (isEditing && transactionToEdit && !!categoriesRes) {
+      setValue('type', transactionToEdit.type);
+      setValue('amount', transactionToEdit.amount);
+      setValue('note', transactionToEdit.note);
+      reset({
+        category_id: transactionToEdit.category_id,
+      });
+      setSelectedDate(new Date(transactionToEdit.date));
+      setSelectedType(transactionToEdit.type as 'expense' | 'income');
+    }
+  }, [isEditing, transactionToEdit, categoriesRes]);
 
   return (
     <Transition.Root show={show} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={onClose}>
+      <Dialog as="div" className="relative z-10" onClose={handleOnClose}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -104,7 +155,9 @@ const CreateTransactionModal = ({
                   }`}
                 >
                   <h2 className="text-2xl font-semibold leading-7 text-gray-900">
-                    Create a new transaction
+                    {isEditing
+                      ? 'Edit transaction'
+                      : 'Create a new transaction'}
                   </h2>
 
                   <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -137,12 +190,12 @@ const CreateTransactionModal = ({
                         <Select
                           register={register('type', {
                             required: true,
-                            value: selectedType,
                             onChange: (e) =>
                               setSelectedType(
                                 e.target.value as 'expense' | 'income'
                               ),
                           })}
+                          value={selectedType}
                         >
                           <option value="expense">Expense</option>
                           <option value="income">Income</option>
@@ -213,14 +266,12 @@ const CreateTransactionModal = ({
                   </div>
 
                   <div className="my-6 pt-3 flex items-center justify-end gap-x-6 border-t border-gray-300">
-                    <Button
-                      onClick={(): void => onClose(false)}
-                      type="button"
-                      color="white"
-                    >
-                      Cancelar
+                    <Button onClick={handleOnClose} type="button" color="white">
+                      Cancel
                     </Button>
-                    <Button type="submit">Guardar</Button>
+                    <Button type="submit">
+                      {isEditing ? 'Update' : 'Create'}
+                    </Button>
                   </div>
                 </form>
               </Dialog.Panel>
