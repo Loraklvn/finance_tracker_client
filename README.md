@@ -63,7 +63,7 @@ To run the frontend application, you have several scripts available in the `pack
 - **Start the development server:**
 
   ```bash
-  yarn dev
+  yarn dev (or npm run dev)
   ```
 
 - **Build the production-ready project:**
