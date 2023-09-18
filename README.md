@@ -113,7 +113,7 @@ The app consists of several pages and components:
 
 ## Note
 
-I'm aware there's a small bug when creating an income, closing the modal and attempting to create an expense. I did not have much time left to test it by the time I finished the project, so I so I apologize!
+I'm aware there's a small bug when creating an income, closing the modal and attempting to create an expense. I did not have much time left to test it by the time I finished the project, so I apologize!
 
 This project currently lacks unit testing due to time constraints. While I would have preferred to include comprehensive unit tests, the project had to be submitted without them.
 
